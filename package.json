@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/matheus-alexandria/mTorrent/issues"
   },
-  "homepage": "https://github.com/matheus-alexandria/mTorrent#readme"
+  "homepage": "https://github.com/matheus-alexandria/mTorrent#readme",
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
 }
