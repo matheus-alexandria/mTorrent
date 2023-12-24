@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/matheus-alexandria/mTorrent#readme",
   "devDependencies": {
+    "@types/bencode": "^2.0.4",
     "@types/node": "^20.10.5",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "bencode": "^4.0.0"
   }
 }
