@@ -24,6 +24,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "bencode": "^4.0.0"
+    "bencode": "^4.0.0",
+    "uint8-util": "^2.2.4"
   }
 }

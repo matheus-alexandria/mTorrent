@@ -1,6 +1,5 @@
 import fs from 'fs';
-import bencode from 'bencode';
+import decode from './decode.js';
 
-const torrent = bencode.decode(fs.readFileSync('puppy.torrent'));
-console.log(torrent);
-// console.log(torrent.announce.toString('utf8'));
+const torrent = decode(fs.readFileSync('puppy.torrent'));
+console.log(torrent.announce.toString('utf8'));
