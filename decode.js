@@ -170,4 +170,6 @@ decode.buffer = function () {
     : decode.data.slice(sep, end)
 }
 
-export default decode
+module.exports = {
+  decode
+}
