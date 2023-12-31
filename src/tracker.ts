@@ -21,7 +21,7 @@ export function getPeers(torrent: any, callback: (peers: any) => any) {
   });
 }
 
-function udpSend(socket: dgram.Socket, message: any, rawUrl: string, callback=()=>{}) {
+function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string, callback=()=>{}) {
   const url = new URL(rawUrl);
   socket.send(message, Number(url.port), url.host, callback);
 }
@@ -30,7 +30,7 @@ function respType(resp) {
   // ...
 }
 
-function buildConnReq() {
+function buildConnReq(): Buffer {
   const buf = Buffer.alloc(16);
 
   buf.writeUInt32BE(0x417, 0);
