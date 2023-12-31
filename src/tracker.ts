@@ -54,7 +54,7 @@ function parseConnResponse(response: Buffer): parseConnResponseResult {
   }
 }
 
-function buildAnnounceReq(connId: Buffer, torrent: any): Buffer {
+function buildAnnounceReq(connId: Buffer, torrent: any, port=6881): Buffer {
   const buf = Buffer.allocUnsafe(98);
 
   // connection id
@@ -87,8 +87,27 @@ function buildAnnounceReq(connId: Buffer, torrent: any): Buffer {
   return buf;
 }
 
-function parseAnnounceResp(resp) {
-  // ...
+function parseAnnounceResp(resp: Buffer) {
+  function group(iterable: Buffer, groupSize: number): Buffer[] {
+    let groups: Buffer[] = [];
+    for (let i = 0; i < iterable.length; i += groupSize) {
+      groups.push(iterable.subarray(i, i + groupSize));
+    }
+    return groups;
+  }
+
+  return {
+    action: resp.readUInt32BE(0),
+    transactionId: resp.readUInt32BE(4),
+    leechers: resp.readUInt32BE(8),
+    seeders: resp.readUInt32BE(12),
+    peers: group(resp.subarray(20), 6).map(address => {
+      return {
+        ip: address.subarray(0, 4).join('.'),
+        port: address.readUInt16BE(4)
+      }
+    })
+  }
 }
 
 type parseConnResponseResult = {
