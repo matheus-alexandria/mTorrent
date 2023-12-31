@@ -1,6 +1,7 @@
 import dgram from 'node:dgram';
 import crypto from 'node:crypto';
 import { decode } from './utils/decode.js';
+import { generateId } from './utils/generateId.js';
 
 export function getPeers(torrent: any, callback: (peers: any) => any) {
   const socket = dgram.createSocket('udp4');
@@ -12,7 +13,7 @@ export function getPeers(torrent: any, callback: (peers: any) => any) {
     if (respType(response) === 'connect') {
       const connResp = parseConnResponse(response);
 
-      const announceReq = buildAnnounceReq(connResp.connectionId);
+      const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
       udpSend(socket, announceReq, url);
     } else if (respType(response) === 'announce') {
       const announceResp = parseAnnounceResp(response);
@@ -53,7 +54,7 @@ function parseConnResponse(response: Buffer): parseConnResponseResult {
   }
 }
 
-function buildAnnounceReq(connId: Buffer) {
+function buildAnnounceReq(connId: Buffer, torrent: any): Buffer {
   const buf = Buffer.allocUnsafe(98);
 
   // connection id
@@ -65,7 +66,7 @@ function buildAnnounceReq(connId: Buffer) {
   // info hash
   torrentParser.infoHash(torrent).copy(buf, 16);
   // peerId
-  util.genId().copy(buf, 36);
+  generateId().copy(buf, 36);
   // downloaded
   Buffer.alloc(8).copy(buf, 56);
   // left
