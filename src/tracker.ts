@@ -87,7 +87,7 @@ function buildAnnounceReq(connId: Buffer, torrent: any, port=6881): Buffer {
   return buf;
 }
 
-function parseAnnounceResp(resp: Buffer) {
+function parseAnnounceResp(resp: Buffer): parseAnnounceResponseResult {
   function group(iterable: Buffer, groupSize: number): Buffer[] {
     let groups: Buffer[] = [];
     for (let i = 0; i < iterable.length; i += groupSize) {
@@ -114,4 +114,17 @@ type parseConnResponseResult = {
   action: number; 
   transactionId: number;
   connectionId: Buffer;
+}
+
+type parseAnnounceResponseResult = {
+  action: number; 
+  transactionId: number;
+  leechers: number;
+  seeders: number;
+  peers: Peer[]
+}
+
+type Peer = {
+  ip: string;
+  port: number;
 }
