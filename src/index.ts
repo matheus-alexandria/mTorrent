@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import { getPeers } from './tracker';
-import { decode } from './utils/decode.js';
+import { open } from './torrentParser';
 
-const torrent = decode(fs.readFileSync('puppy.torrent'), 'utf8');
+const torrent = open('puppy.torrent');
 
 getPeers(torrent, (peers) => {
   console.log('list of peers: ', peers);
