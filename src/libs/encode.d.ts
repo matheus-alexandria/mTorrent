@@ -1,0 +1,1 @@
+export function encode(data: any, buffer?: Buffer, offset?: number): Buffer;
