@@ -1,6 +1,6 @@
 import dgram from 'node:dgram';
 import crypto from 'node:crypto';
-import { decode } from './utils/decode.js';
+import { infoHash } from './torrentParser';
 import { generateId } from './utils/generateId.js';
 
 export function getPeers(torrent: any, callback: (peers: any) => any) {
@@ -64,7 +64,7 @@ function buildAnnounceReq(connId: Buffer, torrent: any, port=6881): Buffer {
   // transaction id
   crypto.randomBytes(4).copy(buf, 12);
   // info hash
-  torrentParser.infoHash(torrent).copy(buf, 16);
+  infoHash(torrent).copy(buf, 16);
   // peerId
   generateId().copy(buf, 36);
   // downloaded
