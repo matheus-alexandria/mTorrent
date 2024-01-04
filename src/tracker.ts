@@ -1,6 +1,6 @@
 import dgram from 'node:dgram';
 import crypto from 'node:crypto';
-import { infoHash } from './torrentParser';
+import { infoHash, size } from './torrentParser';
 import { generateId } from './utils/generateId.js';
 
 export function getPeers(torrent: any, callback: (peers: any) => any) {
@@ -27,8 +27,11 @@ function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string, callback
   socket.send(message, Number(url.port), url.host, callback);
 }
 
-function respType(resp) {
-  // ...
+function respType(resp: Buffer): string {
+  const action = resp.readUInt32BE(0);
+  if (action === 0) return 'connect';
+  if (action === 1) return 'announce';
+  return '';
 }
 
 function buildConnRequest(): Buffer {
@@ -70,7 +73,7 @@ function buildAnnounceReq(connId: Buffer, torrent: any, port=6881): Buffer {
   // downloaded
   Buffer.alloc(8).copy(buf, 56);
   // left
-  torrentParser.size(torrent).copy(buf, 64);
+  size(torrent).copy(buf, 64);
   // uploaded
   Buffer.alloc(8).copy(buf, 72);
   // event
