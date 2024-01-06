@@ -27,9 +27,10 @@ function udpSend(
   socket: dgram.Socket,
   message: Buffer,
   rawUrl: string,
-  callback = () => {}
+  callback = (err: any) => { console.log(err) }
 ) {
   const url = new URL(rawUrl);
+  console.log(message);
   socket.send(message, 0, message.length, Number(url.port), url.host, callback);
 }
 
@@ -43,10 +44,7 @@ function respType(resp: Buffer): string {
 function buildConnRequest(): Buffer {
   const buf = Buffer.alloc(16);
 
-  // buf.writeBigUInt64BE(BigInt(0x41727101980), 0)
-
-  buf.writeUInt32BE(0x417, 0);
-  buf.writeUInt32BE(0x27101980, 4);
+  buf.writeBigUInt64BE(BigInt(0x41727101980), 0);
 
   buf.writeUInt32BE(0, 8);
 
